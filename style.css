@@ -1,0 +1,119 @@
+/* ====== Global Typography & Colors ====== */
+body {
+    font-family: "Inter", "Georgia", serif;
+    margin: 0;
+    padding: 0;
+    background: #f7f4fb;
+    color: #2f1b3a;
+    line-height: 1.75;
+}
+
+h1, h2, h3 {
+    font-family: "Merriweather", serif;
+    color: #3E1F63;
+    font-weight: 700;
+}
+
+a {
+    color: #6E38A1;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #4c257a;
+    text-decoration: underline;
+}
+
+/* ====== Layout Container ====== */
+.container {
+    max-width: 900px;
+    margin: auto;
+    padding: 24px;
+}
+
+/* ====== Header Title ====== */
+h1 {
+    font-size: 36px;
+    margin-top: 10px;
+}
+
+/* ====== Search Box ====== */
+input[type="text"] {
+    width: 100%;
+    padding: 14px;
+    border-radius: 10px;
+    border: 1px solid #c9b7e5;
+    background: #faf7ff;
+    margin-top: 12px;
+    font-size: 16px;
+    transition: 0.2s;
+}
+
+input[type="text"]:focus {
+    border-color: #6E38A1;
+    box-shadow: 0 0 4px #bfa2e4;
+    outline: none;
+}
+
+/* ====== Cerpen Section ====== */
+.cerpen-card {
+    background: #fff;
+    padding: 22px;
+    border-radius: 16px;
+    margin-bottom: 26px;
+    box-shadow: 0 4px 18px rgba(105, 60, 160, 0.08);
+    border: 1px solid #eee;
+}
+
+.cerpen-card h2 {
+    margin-top: 0;
+    font-size: 24px;
+}
+
+.cerpen-card p {
+    opacity: .85;
+    margin-bottom: 14px;
+}
+
+/* ====== Buttons ====== */
+.btn {
+    display: inline-block;
+    padding: 8px 18px;
+    border-radius: 8px;
+    border: none;
+    background: #6E38A1;
+    color: white;
+    font-size: 15px;
+    cursor: pointer;
+    transition: 0.25s;
+    text-decoration: none;
+}
+
+.btn:hover {
+    background: #582b84;
+}
+
+/* ====== Like Button ====== */
+.like-btn {
+    background: #eee6f8;
+    color: #5a2b8b;
+    padding: 6px 12px;
+    border-radius: 10px;
+    font-size: 14px;
+    border: 1px solid #d8c7f0;
+    cursor: pointer;
+    margin-right: 12px;
+}
+
+.like-btn:hover {
+    background: #e4d6fa;
+}
+
+/* ====== Footer ====== */
+footer {
+    text-align: center;
+    padding: 25px;
+    margin-top: 40px;
+    color: #6b5485;
+    font-size: 14px;
+}

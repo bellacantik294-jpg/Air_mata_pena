@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Admin - Air Mata Pena</title>
+<link rel="stylesheet" href="gaya.css">
+
+<!-- Firebase SDK v8 -->
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
+
+<script src="firebase-config.js"></script>
+
+<style>
+body{font-family:Arial;background:#f5f2ff;margin:0;padding:0;}
+.container{max-width:600px;margin:40px auto;background:#fff;padding:30px;border-radius:20px;
+box-shadow:0 10px 40px rgba(80,0,150,0.2);}
+input,textarea{width:100%;padding:12px;margin:8px 0;border-radius:10px;border:1px solid #ccc;}
+button{padding:12px 20px;background:#521c8b;color:white;border:none;border-radius:10px;
+cursor:pointer;}
+button:hover{opacity:0.8;}
+.card{background:#fafafa;padding:15px;border-radius:12px;margin:10px 0;
+border:1px solid #eee;}
+.del{background:#d62828;margin-left:10px;}
+</style>
+</head>
+
+<body>
+
+<div class="container" id="login-box">
+<h2>Admin Panel – Air Mata Pena</h2>
+
+<input type="email" id="admin-email" placeholder="Email admin">
+<input type="password" id="admin-pass" placeholder="Password admin">
+
+<button id="btn-login">Login</button>
+</div>
+
+<div class="container" id="admin-area" style="display:none;">
+<h2>Kelola Cerpen</h2>
+
+<input type="text" id="judul" placeholder="Judul Cerpen">
+<textarea id="isi" rows="6" placeholder="Isi Cerpen"></textarea>
+<input type="text" id="kategori" placeholder="Kategori">
+<input type="file" id="cover">
+
+<button id="btn-simpan">Simpan Cerpen</button>
+<button id="btn-logout" style="background:#333;margin-left:10px;">Logout</button>
+
+<h3>Daftar Cerpen</h3>
+<div id="cerpen-list"></div>
+
+</div>
+
+<script type="module" src="firebase-user.js"></script>
+
+<script type="module">
+import { adminSignIn, adminSignOut, createCerpen, listCerpen, deleteCerpen, uploadCover } from "./firebase-user.js";
+
+const loginBox = document.getElementById("login-box");
+const adminArea = document.getElementById("admin-area");
+
+document.getElementById("btn-login").addEventListener("click", async ()=>{
+    const email = document.getElementById("admin-email").value.trim();
+    const pass = document.getElementById("admin-pass").value;
+
+    try{
+        await adminSignIn(email, pass);
+        loginBox.style.display = "none";
+        adminArea.style.display = "block";
+        loadCerpen();
+    }catch(err){
+        alert("Login gagal: " + err.message);
+    }
+});
+
+document.getElementById("btn-logout").addEventListener("click", async ()=>{
+    await adminSignOut();
+    location.reload();
+});
+
+document.getElementById("btn-simpan").addEventListener("click", async ()=>{
+
+    const judul = document.getElementById("judul").value.trim();
+    const isi = document.getElementById("isi").value.trim();
+    const kategori = document.getElementById("kategori").value.trim();
+    const file = document.getElementById("cover").files[0];
+
+    let coverUrl = "";
+    if(file){ coverUrl = await uploadCover(file); }
+
+    await createCerpen(judul, isi, kategori, coverUrl);
+
+    alert("Cerpen berhasil disimpan!");
+    loadCerpen();
+});
+
+async function loadCerpen(){
+    const data = await listCerpen();
+    const box = document.getElementById("cerpen-list");
+    box.innerHTML = "";
+
+    data.forEach(item=>{
+        const div = document.createElement("div");
+        div.className = "card";
+        div.innerHTML = `
+            <b>${item.judul}</b><br>
+            <small>${item.kategori}</small><br>
+            <button class="del" onclick="hapusCerpen('${item.id}')">Hapus</button>
+        `;
+        box.appendChild(div);
+    });
+}
+
+window.hapusCerpen = async (id)=>{
+    await deleteCerpen(id);
+    alert("Cerpen dihapus!");
+    loadCerpen();
+};
+</script>
+
+</body>
+</html>

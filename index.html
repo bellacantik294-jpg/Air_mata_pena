@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Air Mata Pena — Cerpen Pendek</title>
+  <link rel="icon" href="favicon.png" />
+  <link rel="stylesheet" href="style_dark.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html">Air Mata Pena</a>
+      <nav class="main-nav" aria-label="Menu utama">
+        <a href="index.html">Beranda</a>
+        <a href="kategori.html">Kategori</a>
+        <a href="cerpen-otomatis.html">Cerpen Otomatis</a>
+        <a href="admin.html">Admin</a>
+      </nav>
+      <div class="tools">
+        <button id="toggle-theme" aria-label="Toggle theme">🌓</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <h1>Selamat Datang di Air Mata Pena</h1>
+      <p class="lead">Kumpulan cerpen pendek yang menyentuh hati — baca, rasakan, dan bagikan.</p>
+      <div class="search-wrap">
+        <input id="search" placeholder="Cari judul atau kata..." aria-label="Cari cerpen" />
+      </div>
+    </section>
+
+    <section id="list" class="content-list">
+      <h2>Cerpen Terbaru</h2>
+
+      <!-- sample cards (in production these come from Firestore via admin) -->
+      <article class="card" data-id="sample-1">
+        <div class="card-body">
+          <h3 class="card-title">Kenangan di Bawah Hujan</h3>
+          <p class="excerpt">Cerita tentang rindu, jarak, dan waktu yang tak pernah kembali...</p>
+          <div class="meta">
+            <button class="like" data-id="sample-1">❤ <span>0</span></button>
+            <a class="share" href="#" data-title="Kenangan di Bawah Hujan">Share</a>
+            <a class="read" href="detail-cerpen.html">Baca selengkapnya</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="card" data-id="sample-2">
+        <div class="card-body">
+          <h3 class="card-title">Sepotong Surat Tanpa Nama</h3>
+          <p class="excerpt">Kisah tentang seseorang yang menuliskan pesan terakhirnya...</p>
+          <div class="meta">
+            <button class="like" data-id="sample-2">❤ <span>0</span></button>
+            <a class="share" href="#" data-title="Sepotong Surat Tanpa Nama">Share</a>
+            <a class="read" href="detail-cerpen.html">Baca selengkapnya</a>
+          </div>
+        </div>
+      </article>
+
+    </section>
+
+    <section id="comments" class="comments">
+      <h2>Komentar Terbaru</h2>
+      <div id="comment-list" aria-live="polite"></div>
+
+      <div class="comment-form">
+        <input id="comment-name" placeholder="Nama (opsional)" />
+        <textarea id="comment-body" placeholder="Tulis komentar..."></textarea>
+        <button id="submit-comment">Kirim Komentar</button>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© 2025 Air Mata Pena • Dibuat dengan ♥</p>
+    </div>
+  </footer>
+
+  <script src="firebase-config.js"></script>
+  <script type="module" src="firebase-user.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

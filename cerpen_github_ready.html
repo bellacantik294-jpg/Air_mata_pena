@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cerpen Koleksi</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<style>
+body.dark{background:#111827;color:#e5e7eb}
+pre{white-space:pre-wrap}
+.modal{background:rgba(0,0,0,0.6)}
+</style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+<div class="max-w-4xl mx-auto p-4">
+<h1 class="text-3xl font-bold mb-4">Cerpen — Koleksi Cerita</h1>
+
+<div id="storyList" class="space-y-3 mb-6"></div>
+
+<div class="p-4 rounded-lg shadow bg-white">
+<h2 id="title" class="text-xl font-bold"></h2>
+<p id="subtitle" class="text-sm opacity-70"></p>
+<img id="cover" class="w-full h-48 object-cover rounded mt-3"/>
+
+<pre id="content" class="mt-4"></pre>
+</div>
+</div>
+
+<script>
+const stories=[
+ {id:1,title:"Mawar Berduri",subtitle:"Sebuah cerita tentang luka yang mengajar",
+  cover:"https://images.unsplash.com/photo-1505576391880-3e2c6f9b1b72?q=80&w=1200&auto=format&fit=crop",
+  content:"Senja menyisir taman tua ketika Aruna menemukan satu mawar merah..."},
+ {id:2,title:"Hujan Kedua di Bulan April",subtitle:"Pertemuan yang memberi ruang untuk memulai lagi",
+  cover:"https://images.unsplash.com/photo-1526045612212-70caf35c14df?q=80&w=1200&auto=format&fit=crop",
+  content:"Hujan turun pelan di Kota Lembah Senja..."},
+ {id:3,title:"Lampu Jalan dan Janji yang Tertunda",subtitle:"Tentang kata-kata yang tak pernah dikatakan",
+  cover:"https://images.unsplash.com/photo-1499346030926-9a72daac6c63?q=80&w=1200&auto=format&fit=crop",
+  content:"Di bawah lampu jalan yang temaram..."}
+];
+
+const list=document.getElementById("storyList");
+stories.forEach(s=>{
+ let d=document.createElement("div");
+ d.className="p-3 rounded border bg-white shadow cursor-pointer";
+ d.innerHTML=`<div class='font-semibold'>${s.title}</div><div class='text-xs opacity-60'>${s.subtitle}</div>`;
+ d.onclick=()=>openStory(s);
+ list.appendChild(d);
+});
+function openStory(s){
+ document.getElementById("title").textContent=s.title;
+ document.getElementById("subtitle").textContent=s.subtitle;
+ document.getElementById("cover").src=s.cover;
+ document.getElementById("content").textContent=s.content;
+}
+openStory(stories[0]);
+</script>
+
+</body>
+</html>

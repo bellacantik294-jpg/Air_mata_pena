@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Admin - Air Mata Pena</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="favicon.png">
+  <link href="https://cdn.jsdelivr.net/npm/quill@2.0.0/dist/quill.snow.css" rel="stylesheet">
+
+  <style>
+    body { font-family: Inter, sans-serif; background:#f7f4fb; padding:20px; color:#2f1b3a; }
+    .admin-box { background:#fff; padding:25px; border-radius:16px; max-width:900px; margin:auto; box-shadow:0 5px 20px rgba(100,0,120,0.08); }
+    input, textarea { width:100%; padding:12px; border-radius:10px; border:1px solid #c9b7e5; background:#faf7ff; margin:8px 0; }
+    button { padding:10px 20px; background:#6E38A1; color:white; border:none; border-radius:10px; cursor:pointer; }
+    button:hover { background:#4c257a; }
+    .card { background:white; padding:15px; border-radius:12px; margin-top:15px; box-shadow:0 3px 10px rgba(80,0,90,0.07); }
+    .del { background:#ff3366; }
+    .cover-preview { width:140px; height:190px; border-radius:12px; object-fit:cover; margin-top:10px; display:none; }
+    #preview-box { background:white; padding:20px; border-radius:12px; display:none; box-shadow:0 4px 20px rgba(0,0,0,0.1); }
+  </style>
+</head>
+
+<body>
+  <main class="admin-box">
+    <h2>Admin Panel – Air Mata Pena</h2>
+
+    <!-- LOGIN -->
+    <section class="admin-login">
+      <input id="admin-email" placeholder="Email admin" />
+      <input id="admin-pass" type="password" placeholder="Password" />
+      <button id="btn-login">Login</button>
+      <button id="btn-logout" style="display:none">Logout</button>
+    </section>
+
+    <!-- MAIN ADMIN AREA -->
+    <section id="admin-area" style="display:none;">
+      <h3>Buat Cerpen Baru</h3>
+
+      <input id="title" placeholder="Judul Cerpen" />
+
+      <label>Cover Cerpen:</label>
+      <input type="file" id="cover-input">
+      <img id="cover-preview" class="cover-preview">
+
+      <label>Isi Cerpen:</label>
+      <div id="editor" style="height:250px;background:white;border-radius:12px;"></div>
+
+      <button id="preview-btn">Preview</button>
+      <button id="create">Publikasikan</button>
+
+      <div id="preview-box"></div>
+
+      <h3>Daftar Cerpen</h3>
+      <div id="list-cerpen"></div>
+    </section>
+  </main>
+
+  <!-- FIREBASE -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+  <script src="firebase-config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/quill@2.0.0/dist/quill.js"></script>
+
+  <script type="module">
+    import {
+      adminSignIn, adminSignOut,
+      createCerpen, listCerpen,
+      deleteCerpen, uploadCover
+    } from "./firebase-user.js";
+
+    let quill = new Quill('#editor', {
+      theme: 'snow',
+      placeholder: 'Tulis cerpen di sini...',
+      modules: { toolbar: [['bold','italic','underline'],[{header:[1,2,false]}],['link','blockquote'],[{list:'ordered'},{list:'bullet'}]] }
+    });
+
+    // LOGIN FIX
+    document.getElementById('btn-login').addEventListener('click', async ()=>{
+      const email = document.getElementById('admin-email').value.trim();
+      const pass  = document.getElementById('admin-pass').value;
+
+      if (!email || !pass) return alert("Email dan Password wajib diisi!");
+
+      try {
+        await adminSignIn(email, pass);
+        document.getElementById('admin-area').style.display = 'block';
+        document.getElementById('btn-login').style.display = 'none';
+        document.getElementById('btn-logout').style.display = 'inline-block';
+        loadList();
+      } catch(err) {
+        let msg = err.message;
+        if(msg.includes("wrong-password")) msg = "Password salah!";
+        if(msg.includes("user-not-found")) msg = "Akun tidak ditemukan!";
+        alert("Login gagal: " + msg);
+      }
+    });
+
+    // LOGOUT FIX
+    document.getElementById('btn-logout').addEventListener('click', async ()=>{
+      await adminSignOut();
+      location.reload();
+    });
+
+    // COVER PREVIEW
+    const coverInput = document.getElementById("cover-input");
+    coverInput.onchange = ()=>{
+      const file = coverInput.files[0];
+      if (file){
+        const img = document.getElementById("cover-preview");
+        img.src = URL.createObjectURL(file);
+        img.style.display = "block";
+      }
+    };
+
+    // PREVIEW CERITA
+    document.getElementById("preview-btn").onclick = ()=>{
+      document.getElementById("preview-box").innerHTML = `
+        <h2>${title.value}</h2>
+        <img src="${cover-preview.src}" style="max-width:200px;border-radius:12px;">
+        <br><br>
+        ${quill.root.innerHTML}
+      `;
+      preview-box.style.display = "block";
+    };
+
+    // CREATE CERPEN
+    document.getElementById("create").onclick = async ()=>{
+      const judul = document.getElementById("title").value;
+      const isi = quill.root.innerHTML;
+      const file = coverInput.files[0];
+
+      if(!judul || !isi) return alert("Judul dan isi tidak boleh kosong!");
+
+      let coverUrl = "";
+      if(file) coverUrl = await uploadCover(file);
+
+      await createCerpen(judul, isi, "Umum", coverUrl);
+      alert("Cerpen berhasil dibuat!");
+      loadList();
+    };
+
+    // LIST CERPEN
+    async function loadList(){
+      const list = await listCerpen();
+      const box = document.getElementById("list-cerpen");
+      box.innerHTML = "";
+
+      list.forEach(c =>{
+        const div = document.createElement("div");
+        div.className = "card";
+        div.innerHTML = `
+          <h4>${c.judul}</h4>
+          <button class="del" data-id="${c.id}">Hapus</button>
+        `;
+        box.appendChild(div);
+      });
+
+      document.querySelectorAll('.del').forEach(btn=>{
+        btn.onclick = async ()=>{
+          if(confirm("Hapus cerpen ini?")){
+            await deleteCerpen(btn.dataset.id);
+            loadList();
+          }
+        }
+      });
+    }
+
+  </script>
+</body>
+</html>

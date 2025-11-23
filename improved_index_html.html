@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Air Mata Pena — Cerpen Pendek</title>
+  <link rel="icon" href="favicon.png" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <header class="site-header" style="background:#f7f4fb;padding:20px 0;border-bottom:1px solid #e5d9f7;">
+    <div class="container header-inner" style="max-width:900px;margin:auto;display:flex;justify-content:space-between;align-items:center;">
+      <a class="brand" href="index.html" style="font-size:26px;font-weight:700;color:#6E38A1;text-decoration:none;">Air Mata Pena</a>
+      <nav class="main-nav" aria-label="Menu utama" style="display:flex;gap:20px;">
+        <a href="index.html" style="color:#6E38A1;text-decoration:none;">Beranda</a>
+        <a href="kategori.html" style="color:#6E38A1;text-decoration:none;">Kategori</a>
+        <a href="cerpen-otomatis.html" style="color:#6E38A1;text-decoration:none;">Cerpen Otomatis</a>
+        <a href="admin.html" style="color:#6E38A1;text-decoration:none;">Admin</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container" style="max-width:900px;margin:auto;padding:20px;">
+    <section class="hero" style="margin-top:20px;">
+      <h1 style="font-size:34px;color:#3E1F63;font-weight:700;">Selamat Datang di Air Mata Pena</h1>
+      <p class="lead" style="font-size:18px;color:#4b3a66;">Kumpulan cerpen pendek yang menyentuh hati — baca, rasakan, dan bagikan.</p>
+
+      <div class="search-wrap" style="margin-top:20px;">
+        <input id="search" placeholder="Cari judul atau kata..." aria-label="Cari cerpen" style="width:100%;padding:14px;border-radius:10px;border:1px solid #c9b7e5;background:#faf7ff;" />
+      </div>
+    </section>
+
+    <section id="list" class="content-list" style="margin-top:40px;">
+      <h2 style="color:#3E1F63;font-size:28px;font-weight:700;">Cerpen Terbaru</h2>
+
+      <article class="card" style="background:white;padding:20px;border-radius:16px;margin-top:20px;box-shadow:0 4px 15px rgba(80,0,90,0.07);">
+        <h3 style="margin:0;color:#3E1F63;font-size:22px;font-weight:700;">Kenangan di Bawah Hujan</h3>
+        <p class="excerpt" style="color:#4b3a66;">Cerita tentang rindu, jarak, dan waktu yang tak pernah kembali...</p>
+        <div class="meta" style="margin-top:10px;display:flex;gap:15px;align-items:center;">
+          <button class="like" data-id="sample-1" style="background:#eee6f8;color:#5a2b8b;padding:6px 12px;border-radius:10px;border:1px solid #d8c7f0;">❤ <span>0</span></button>
+          <a class="share" href="#" data-title="Kenangan di Bawah Hujan" style="color:#6E38A1;">Share</a>
+          <a class="read" href="detail-cerpen.html" style="color:#6E38A1;font-weight:600;">Baca selengkapnya</a>
+        </div>
+      </article>
+
+      <article class="card" style="background:white;padding:20px;border-radius:16px;margin-top:20px;box-shadow:0 4px 15px rgba(80,0,90,0.07);">
+        <h3 style="margin:0;color:#3E1F63;font-size:22px;font-weight:700;">Sepotong Surat Tanpa Nama</h3>
+        <p class="excerpt" style="color:#4b3a66;">Kisah tentang seseorang yang menuliskan pesan terakhirnya...</p>
+        <div class="meta" style="margin-top:10px;display:flex;gap:15px;align-items:center;">
+          <button class="like" data-id="sample-2" style="background:#eee6f8;color:#5a2b8b;padding:6px 12px;border-radius:10px;border:1px solid #d8c7f0;">❤ <span>0</span></button>
+          <a class="share" href="#" data-title="Sepotong Surat Tanpa Nama" style="color:#6E38A1;">Share</a>
+          <a class="read" href="detail-cerpen.html" style="color:#6E38A1;font-weight:600;">Baca selengkapnya</a>
+        </div>
+      </article>
+    </section>
+
+    <section id="comments" class="comments" style="margin-top:40px;">
+      <h2 style="color:#3E1F63;font-size:28px;font-weight:700;">Komentar Terbaru</h2>
+      <div id="comment-list" aria-live="polite"></div>
+
+      <div class="comment-form" style="margin-top:15px;">
+        <input id="comment-name" placeholder="Nama (opsional)" style="padding:12px;border-radius:10px;border:1px solid #c9b7e5;background:#faf7ff;width:100%;" />
+        <textarea id="comment-body" placeholder="Tulis komentar..." style="padding:12px;border-radius:10px;border:1px solid #c9b7e5;background:#faf7ff;width:100%;margin-top:10px;"></textarea>
+        <button id="submit-comment" style="padding:10px 20px;margin-top:10px;background:#6E38A1;border:none;color:white;border-radius:10px;">Kirim Komentar</button>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer" style="margin-top:50px;padding:20px 0;text-align:center;color:#6b5485;">
+    <p>© 2025 Air Mata Pena • Dibuat dengan ♥</p>
+  </footer>
+
+  <script type="module" src="firebase-config.js"></script>
+  <script type="module" src="firebase-user.js"></script>
+  <script src="skrip.js"></script>
+</body>
+</html>
